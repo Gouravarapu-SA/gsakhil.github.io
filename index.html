@@ -1,80 +1,413 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sai Akhil Gouravarapu - Portfolio</title>
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/lightbox2@2.11.4/dist/css/lightbox.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; background-color: #111; color: #fff; scroll-behavior: smooth; }
-    header { position: relative; height: 100vh; background: url('copy_AB45C26C-C64F-4854-897E-E533E44EAB4A.gif') center/cover no-repeat; display: flex; justify-content: center; align-items: center; text-align: center; }
-    header h1 { font-size: 3rem; background-color: rgba(0,0,0,0.6); padding: 1rem 2rem; border-radius: 10px; }
-    nav { background: #222; position: sticky; top: 0; display: flex; justify-content: center; padding: 1rem; z-index: 1000; }
-    nav a { color: #fff; margin: 0 1rem; text-decoration: none; font-weight: bold; }
-    section { padding: 4rem 2rem; max-width: 800px; margin: auto; }
-    h2 { color: #0ff; }
-    .gallery { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-    .gallery img { width: 200px; cursor: pointer; border-radius: 8px; }
-    footer { text-align: center; padding: 2rem; background: #222; }
+
+    .menu-toggle {
+  display: none;
+  font-size: 2rem;
+  color: #e50914;
+  padding: 1rem;
+  background: #222;
+  text-align: right;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background-color: #222;
+    padding: 0;
+  }
+
+  .nav-links a {
+    padding: 1rem;
+    border-top: 1px solid #333;
+    width: 100%;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+}
+
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
+      scroll-behavior: smooth;
+    }
+
+    section, header {
+      position: relative;
+      overflow: hidden;
+    }
+
+    header {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      filter: brightness(1.7);
+    }
+
+    header h1 {
+      font-size: 3rem;
+    }
+
+    nav {
+      background: #222;
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: #e50914;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .overlay {
+      position: relative;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 2rem;
+      border-radius: 10px;
+    }
+
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-size: 3rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      line-height: 1.2;
+      animation: marvelFadeIn 2s ease-out forwards;
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    .hero-subtitle {
+      display: inline-block;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 300;
+      color: #ccc;
+      letter-spacing: 1px;
+      margin-top: 0.5rem;
+      opacity: 0;
+      animation: fadeInText 2s ease-out forwards;
+      animation-delay: 1.5s;
+    }
+
+    @keyframes marvelFadeIn {
+      0% { opacity: 0; transform: scale(0.95) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes fadeInText {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .video-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+    }
+
+    .bg-video-half {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 75%;
+      object-fit: cover;
+      opacity: 0.75;
+      mix-blend-mode: screen;
+    }
+
+    .bg-video-half.left {
+      left: 0;
+      mask-image: linear-gradient(to right, black 80%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%);
+    }
+
+    .bg-video-half.right {
+      right: 0;
+      mask-image: linear-gradient(to left, black 80%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to left, black 80%, transparent 100%);
+    }
+
+    @media (max-width: 768px) {
+      .video-wrapper {
+        flex-direction: column;
+      }
+
+      .bg-video-half {
+        width: 100% !important;
+        height: 100%;
+        mask-image: none !important;
+        -webkit-mask-image: none !important;
+        mix-blend-mode: normal;
+        opacity: 0.3;
+      }
+
+      .bg-video-half.left,
+      .bg-video-half.right {
+        left: 0;
+        right: auto;
+      }
+    }
+
+    .bg-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.35;
+    }
+
+    section {
+      padding: 6rem 2rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    h2 {
+      color: #e50914;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #222;
+    }
+
+    .portfolio-flex {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.portfolio-text {
+  flex: 1;
+  min-width: 250px;
+}
+
+.qr-codes {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.qr-codes img {
+  width: 120px;
+  height: auto;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.qr-codes img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+}
+
+@media (max-width: 600px) {
+  .portfolio-flex {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .qr-codes {
+    justify-content: center;
+    margin-top: 1rem;
+  }
+}
+   .qr-codes img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+
   </style>
 </head>
 <body>
-  <header id="home">
-    <h1>Sai Akhil Gouravarapu<br><small>Video Editor & Data Enthusiast</small></h1>
-  </header>
-  <nav>
+
+<header id="home">
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="poland.mp4" type="video/mp4">
+  </video>
+  <div class="overlay">
+    <h1 class="hero-title">
+      Sai Akhil Gouravarapu
+      <br>
+      <span class="hero-subtitle">Video Editor & Cinematography</span>
+    </h1>
+  </div>
+</header>
+
+<!-- Hamburger Button -->
+<div class="menu-toggle" id="menu-toggle">&#9776;</div>
+
+<nav>
+  <div class="nav-links" id="nav-links">
     <a href="#about">About</a>
     <a href="#education">Education</a>
     <a href="#experience">Experience</a>
-    <a href="#gallery">Reels</a>
+    <a href="#portfolio">Portfolio</a>
     <a href="#contact">Contact</a>
-  </nav>
+  </div>
+</nav>
 
-  <section id="about" data-aos="fade-up">
+
+<section id="about" data-aos="fade-up">
+  <div class="video-wrapper">
+    <video class="bg-video-half left" autoplay muted loop playsinline>
+      <source src="germany1.mp4" type="video/mp4">
+    </video>
+    <video class="bg-video-half right" autoplay muted loop playsinline>
+      <source src="karlskrona2.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="overlay">
     <h2>About Me</h2>
-    <p>Aspiring Data Scientist with a strong passion for visual storytelling and cinematic video editing. Experienced in Python, SQL, Tableau, and Premiere Pro with a keen eye for detail and flow.</p>
-  </section>
+    <p>Former Software Engineering Student and Web Application Developer turned visual storyteller with a deep passion for cinematography and video editing. My journey began behind the camera, where I captured compelling narratives for influencers, transforming raw footage into captivating stories. Proficient in tools like Premiere Pro, After Effects, Media Encoder, Adobe Audition and Capcut, I blend technical skills with a creative eye to craft seamless and resonant stories.</p>
+  </div>
+</section>
 
-  <section id="education" data-aos="fade-up">
+<section id="education" data-aos="fade-up">
+  <div class="video-wrapper">
+    <video class="bg-video-half left" autoplay muted loop playsinline>
+      <source src="surya.mp4" type="video/mp4">
+    </video>
+    <video class="bg-video-half right" autoplay muted loop playsinline>
+      <source src="arjun reddy.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="overlay">
     <h2>Education</h2>
-    <p><strong>Masters in Data Science</strong> – University of the Pacific (Expected 2025)</p>
-    <p><strong>B.Tech in Computer Science</strong> – VIT-AP University</p>
-  </section>
+    <p>Masters in Software Engineering – Blekinge Institute of Technology (2022 - 2025)</p>
+    <p>B.Tech in Computer Science – JNTU Hyderabad (2014 - 2018) </p>
+  </div>
+</section>
 
-  <section id="experience" data-aos="fade-up">
-    <h2>Experience</h2>
-    <p><strong>Data Analyst Intern</strong> – XYZ Corp</p>
-    <p>• Created insightful dashboards using Tableau and Power BI<br>• Developed scripts to automate data extraction and transformation</p>
-    <p><strong>Freelance Video Editor</strong></p>
-    <p>• Edited short films, vlogs, and reels for social media<br>• Used Premiere Pro, After Effects, and DaVinci Resolve</p>
-  </section>
-
-  <section id="gallery" data-aos="fade-up">
-    <h2>Reels</h2>
-    <div class="gallery">
-      <a href="copy_AB45C26C-C64F-4854-897E-E533E44EAB4A.gif" data-lightbox="reels"><img src="copy_AB45C26C-C64F-4854-897E-E533E44EAB4A.gif" alt="Reel 1"></a>
-      <a href="copy_CDCA5DEF-AA07-41A0-9C55-363CD4FD9CD9.gif" data-lightbox="reels"><img src="copy_CDCA5DEF-AA07-41A0-9C55-363CD4FD9CD9.gif" alt="Reel 2"></a>
-      <a href="copy_E4A27290-3C96-4CF2-99B1-E1B5D300BAE4.gif" data-lightbox="reels"><img src="copy_E4A27290-3C96-4CF2-99B1-E1B5D300BAE4.gif" alt="Reel 3"></a>
-      <a href="copy_8575ED67-3716-41F5-BA16-A2C00C673333.gif" data-lightbox="reels"><img src="copy_8575ED67-3716-41F5-BA16-A2C00C673333.gif" alt="Reel 4"></a>
-      <a href="copy_49024665-EF34-46A8-9022-269BB553B6B2.gif" data-lightbox="reels"><img src="copy_49024665-EF34-46A8-9022-269BB553B6B2.gif" alt="Reel 5"></a>
+<section id="experience" data-aos="fade-up">
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="minerva.mp4" type="video/mp4">
+  </video>
+  <div class="overlay">
+      <h2>Experience</h2>
+      <p>Application Developer – Star Players (2019 - 2022)<br>
+        • Developed Android/iOS app with Flutter<br>
+        • Used Firebase for backend and optimized queries<br>
+        • Integrated secure payments with 98% success rate</p>
+      <p>Freelance Video Editor & DOP (2022 - Present)<br>
+        • Shot and edited short films, vlogs & reels<br>
+        • Tools: Premiere Pro, After Effects, CapCut, DaVinci Resolve</p></p>
     </div>
-  </section>
+</section>
 
-  <section id="contact" data-aos="fade-up">
+<section id="portfolio" data-aos="fade-up">
+  <div class="video-wrapper">
+    <video class="bg-video-half left" autoplay muted loop playsinline>
+      <source src="OG.mp4" type="video/mp4">
+    </video>
+    <video class="bg-video-half right" autoplay muted loop playsinline>
+      <source src="vineeth2.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="overlay">
+    <h2>Portfolio</h2>
+    <div class="portfolio-flex">
+      <div class="portfolio-text">
+        <p>Check out my creative work:</p>
+      <div class="qr-codes">
+  <a href="https://www.instagram.com/aka_cordisdie/" target="_blank">
+    <img src="aka_cordisdie_insta.png" alt="Instagram QR">
+  </a>
+  <a href="https://www.youtube.com/@Cordisd7" target="_blank">
+    <img src="qrcode.png" alt="YouTube QR">
+  </a>
+</div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="contact" data-aos="fade-up">
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="copy_contact.gif" type="video/mp4">
+  </video>
+  <div class="overlay">
     <h2>Contact</h2>
-    <p>Email: saikhilg@gmail.com</p>
-    <p>LinkedIn: <a href="https://www.linkedin.com/in/saiakhil" style="color:#0ff">/saiakhil</a></p>
-  </section>
+    <p>Email: <a href="mailto:sago22@student.bth.se" style="color:#e50914;">sago22@student.bth.se</a></p>
+    <p>Phone: <a href="tel:+918686381440" style="color:#e50914;">+91 86863 81440</a></p>
+    <p>LinkedIn: <a href="https://www.linkedin.com/in/sai-akhil-gouravarapu-702961292" target="_blank" style="color:#e50914;">/saiakhil</a></p>
+  </div>
+</section>
 
-  <footer>
-    <p>&copy; 2025 Sai Akhil Gouravarapu</p>
-  </footer>
+<footer>
+  <p>&copy; 2025 Sai Akhil Gouravarapu</p>
+</footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.4/dist/js/lightbox.min.js"></script>
-  <script>
-    AOS.init();
-  </script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init();</script>
+
+<script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const navLinks = document.getElementById('nav-links');
+
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('show');
+    menuToggle.textContent = navLinks.classList.contains('show') ? '✖' : '☰';
+  });
+</script>
+
+
 </body>
 </html>
